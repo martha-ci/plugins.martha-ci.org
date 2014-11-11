@@ -4,17 +4,14 @@
     <head>
         <meta charset="UTF-8" />
 
-        <title>{% block title %}Packagist{% endblock %}</title>
-        <meta name="description" content="" />
-        <meta name="author" content="Jordi Boggiano" />
+        <title>{% block title %}Martha Plugin Repository{% endblock %}</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
         <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}" />
 
-        <link rel="stylesheet" href="{{ asset('bundles/packagistweb/css/main.css?v=15') }}" />
-        <link rel="stylesheet" href="{{ asset('css/humane/jackedup.css?v=3') }}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="{{ asset('css/fontawesome/font-awesome.css') }}" />
         <!--[if lt IE 8]>
         <link rel="stylesheet" href="{{ asset('css/fontawesome/font-awesome-ie7.css') }}" />
@@ -39,6 +36,42 @@
         {% block head_additions %}{% endblock %}
     </head>
     <body>
+
+        <!-- Static navbar -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Martha Plugins</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{ path('hwi_oauth_connect') }}">Login</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group custom-search-form">
+                        <input type="text" class="form-control" placeholder="Search for plugins...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+        </div>
+
         <div class="container">
             <div class="user">
                 {% if app.user %}
@@ -52,9 +85,9 @@
 
             <header>
                 {% if page is not defined or page != 'submit' %}
-                    <a class="submit" href="{{ path('submit') }}">Submit Package</a>
+                    <a class="submit" href="{{ path('submit') }}">Submit Plugin</a>
                 {% endif %}
-                <h1><a href="{{ path('home') }}">Packagist</a></h1>
+                <h1><a href="{{ path('home') }}">Martha Plugins</a></h1>
                 <h2>The PHP package archivist.</h2>
             </header>
 
