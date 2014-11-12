@@ -3,19 +3,15 @@
 <!--[if (gte IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="UTF-8" />
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{% block title %}Martha Plugin Repository{% endblock %}</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-        <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}" />
-
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="{{ asset('css/fontawesome/font-awesome.css') }}" />
-        <!--[if lt IE 8]>
-        <link rel="stylesheet" href="{{ asset('css/fontawesome/font-awesome-ie7.css') }}" />
-        <![endif]-->
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/main.css">
+        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,700" rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
         {% block head_feeds %}
         <link rel="alternate" type="application/rss+xml" title="Newly Submitted Packages - Packagist" href="{{ url('feed_packages', {_format: 'rss'}) }}" />
@@ -35,61 +31,58 @@
 
         {% block head_additions %}{% endblock %}
     </head>
-    <body>
-
-        <!-- Static navbar -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation">
+<body data-spy="scroll" data-offset="0" data-target="#navigation">
+        <div id="navigation" class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Martha Plugins</a>
+                    <a class="navbar-brand" href="#"><span class="marthify">Martha</span> Plugins</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{ path('hwi_oauth_connect') }}">Login</a></li>
+                        {% if app.user %}
+                            <li><a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a></li>
+                            <li><a href="{{ path('logout') }}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{{ path('hwi_oauth_connect') }}">Login</a></li>
+                        {% endif %}
                     </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="input-group custom-search-form">
-                        <input type="text" class="form-control" placeholder="Search for plugins...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                    </div><!-- /input-group -->
                 </div>
             </div>
         </div>
 
-        <div class="container">
-            <div class="user">
-                {% if app.user %}
-                    <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a> | <a href="{{ path('logout') }}">Logout</a>
-                {% else %}
-                    <a href="{{ path('fos_user_registration_register') }}">Create a new account</a>
-                    |
-                    <a href="{{ path('hwi_oauth_connect') }}">Login</a>
-                {% endif %}
+        <div id="headerwrap">
+            <div class="container">
+                <div class="row centered">
+                    <div class="col-lg-12">
+                        <h1>Plugins for <b class="marthify">Martha</b></h1>
+                        <h3>Because one solution doesn't fit all</h3>
+                        <br>
+                    </div>
+                </div>
+                <div class="row centered">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Search for plugins...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
             </div>
+        </div>
 
-            <header>
-                {% if page is not defined or page != 'submit' %}
-                    <a class="submit" href="{{ path('submit') }}">Submit Plugin</a>
-                {% endif %}
-                <h1><a href="{{ path('home') }}">Martha Plugins</a></h1>
-                <h2>The PHP package archivist.</h2>
-            </header>
+
+        <div class="container">
 
             <div class="main" role="main">
                 {% for type, flashMessages in app.session.flashbag.all() %}
@@ -122,30 +115,10 @@
         </div>
 
         <footer>
-            <ul>
-                <li><a href="{{ path('about') }}">{{ 'menu.about_packagist'|trans }}</a></li>
-                <li><a href="{{ path('feeds') }}">{{ 'menu.rss_feeds'|trans }}</a></li>
-                <li><a href="{{ path('home') }}">{{ 'menu.home'|trans }}</a></li>
-            </ul>
-            <ul>
-                {% if app.user %}
-                    <li><a href="{{ path('fos_user_profile_show') }}">{{ 'menu.profile'|trans }}</a></li>
-                    <li><a href="{{ path('logout') }}">{{ 'menu.logout'|trans }}</a></li>
-                {% else %}
-                    <li><a href="{{ path('fos_user_registration_register') }}">{{ 'menu.register'|trans }}</a></li>
-                    <li><a href="{{ path('hwi_oauth_connect') }}">{{ 'menu.login'|trans }}</a></li>
-                {% endif %}
-            </ul>
-            <ul>
-                <li><a href="{{ path('browse') }}">{{ 'menu.browse_packages'|trans }}</a></li>
-                <li><a href="{{ path('stats') }}">{{ 'menu.stats'|trans }}</a></li>
-            </ul>
-            <ul>
-                <li><a href="https://twitter.com/packagist">{{ 'menu.twitter'|trans }}</a></li>
-                <li><a href="mailto:contact@packagist.org">{{ 'menu.contact'|trans }}</a></li>
-            </ul>
-            <p>Packagist maintenance and hosting is supported by <a href="https://toranproxy.com/">Toran Proxy</a></p>
-            <div class="clearfix"></div>
+            <div class="container">
+                <hr>
+                Martha Plugins is powered by <a href="https://packagist.org">Packagist</a>.
+            </div>
         </footer>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
